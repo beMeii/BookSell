@@ -1,25 +1,22 @@
-INSERT INTO public.roles
+INSERT INTO roles
 (role_id, role_name)
 VALUES(1, 'ADMIN');
-INSERT INTO public.roles
+INSERT INTO roles
 (role_id, role_name)
 VALUES(2, 'CUSTOMER');
 
 INSERT INTO public.accounts
-(account_id, email, "password",role_id)
+(account_id, email, password,role_id)
 VALUES(7, 'admin@gmail.com', '$2a$10$Z90Vo4bSNLhvifpq6eqF.OjCngYLv65hTn7QVngedz8g4r4vYsh6.',1);
 INSERT INTO public.accounts
-(account_id, email, "password",role_id)
+(account_id, email, password,role_id)
 VALUES(10, 'anthony@gmail.com', '$2a$10$ax5PL8Zfrajt48qlm6OT0enq4XFGrYxK6eCF4L9xWHdfeVNYeb55a',2);
 INSERT INTO public.accounts
-(account_id, email, "password",role_id)
+(account_id, email, password,role_id)
 VALUES(11, 'simon@gmail.com', '$2a$10$a/SGBo4iWQgHuKcx8QNS3.XRMmDgPmhRpBCIZv2PEAIKMVHD7oxF.',2);
 INSERT INTO public.accounts
-(account_id, email, "password",role_id)
+(account_id, email, password,role_id)
 VALUES(12, 'tranminhkhang@gmail.com', '$2a$10$/6XE74FmauFskpvfWHTH2uDrpUoPYxq6fjv/7BH7SrhCeyJ5CjdI6',1);
-
-
-
 
 INSERT INTO public.genres
 (genre_id, genre_name)
@@ -153,51 +150,51 @@ VALUES(606, 56, 3);
 
 
 INSERT INTO public.customers
-(customer_id, birthday, gender, "name", status)
+(customer_id, birthday, gender, name, status)
 VALUES(7, '2002-12-12', 'male', 'Admin', 'active');
 INSERT INTO public.customers
-(customer_id, birthday, gender, "name", status)
+(customer_id, birthday, gender, name, status)
 VALUES(10, '2002-11-10', 'male', 'Anthony Doerr', 'active');
 INSERT INTO public.customers
-(customer_id, birthday, gender, "name", status)
+(customer_id, birthday, gender, name, status)
 VALUES(11, '2002-11-10', 'male', 'Simon Spier', 'active');
 INSERT INTO public.customers
-(customer_id, birthday, gender, "name", status)
+(customer_id, birthday, gender, name, status)
 VALUES(12, '2022-03-23', 'male', 'Khang', 'disabled');
 
 
 INSERT INTO public.comments
-(comment_id, "content", rating, "timestamp", book_id, customer_id)
+(comment_id, content, rating, timestamp, book_id, customer_id)
 VALUES(21, 'hello this is 4 stars', 4.0, '2022-11-09 19:51:25.168', 54, 11);
 INSERT INTO public.comments
-(comment_id, "content", rating, "timestamp", book_id, customer_id)
+(comment_id, content, rating, timestamp, book_id, customer_id)
 VALUES(22, 'this is 1 star', 1.0, '2022-11-09 19:51:44.417', 54, 11);
 INSERT INTO public.comments
-(comment_id, "content", rating, "timestamp", book_id, customer_id)
+(comment_id, content, rating, timestamp, book_id, customer_id)
 VALUES(23, '5 stars', 5.0, '2022-11-10 14:51:24.330', 54, 12);
 
 
 
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(39, 'Thu Duc City, HCM City', '0363111012', 'pending', '2020-12-12 07:00:00.000', 137.2, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(40, 'me', 'take', 'pending', '2022-11-09 15:36:28.465', 78.95, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(41, 'Thu Duc City, HCM City', '0363111012', 'pending', '2020-12-12 07:00:00.000', 137.2, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(42, '123', '123', 'pending', '2022-11-09 19:48:56.683', 45.7, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(43, '456', '123', 'pending', '2022-11-10 13:07:52.475', 22.85, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(44, '678910', '12345', 'pending', '2022-11-10 13:09:24.526', 66.15, 11);
 INSERT INTO public.orders
-(order_id, address, phone, status, "time", total_amount, customer_id)
+(order_id, address, phone, status, time, total_amount, customer_id)
 VALUES(45, 'Thu Duc HCM', '0933111098', 'pending', '2022-11-10 14:53:55.799', 0.0, 12);
 
 
