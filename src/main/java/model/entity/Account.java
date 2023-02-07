@@ -1,14 +1,16 @@
 package model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 
+@Component
+@Data
 @Entity
 @Table(name = "accounts")
-public class Accounts {
+public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     private String accountId;
     @Column(name = "email")

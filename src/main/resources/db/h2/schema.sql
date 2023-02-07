@@ -12,13 +12,13 @@ DROP TABLE comments IF EXISTS;
 
 
 CREATE TABLE roles (
-	role_id int4 NOT NULL,
+	role_id int4 auto_increment NOT NULL,
 	role_name varchar(55) NULL,
 	CONSTRAINT roles_pkey PRIMARY KEY (role_id)
 );
 
 CREATE TABLE accounts (
-	account_id int4 NOT NULL,
+	account_id int4 auto_increment NOT NULL,
 	email varchar(255) NULL,
 	password varchar(255) NULL,
 	role_id int4 NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE accounts (
 
 
 CREATE TABLE books (
-	book_id int4 NOT NULL,
+	book_id int4 auto_increment NOT NULL,
 	author varchar(255) NULL,
 	description text NULL,
 	image_link varchar(511) NULL,
@@ -44,7 +44,7 @@ CREATE TABLE books (
 
 
 CREATE TABLE genres (
-	genre_id int4 NOT NULL,
+	genre_id int4 auto_increment NOT NULL,
 	genre_name varchar(55) NULL,
 	CONSTRAINT genres_pkey PRIMARY KEY (genre_id)
 );

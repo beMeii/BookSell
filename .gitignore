@@ -3,4 +3,5 @@ target/classes/api/OrderController.class
 target/classes/model/dto/OrderDTO.class
 target/classes/model/entity/Order.class
 target/classes/services/repository/OrderRepository.class
+*/target/**
 .idea/vcs.xml
