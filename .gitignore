@@ -5,3 +5,16 @@ target/classes/model/entity/Order.class
 target/classes/services/repository/OrderRepository.class
 */target/**
 .idea/vcs.xml
+/target/
+.idea/compiler.xml
+target/classes/application.properties
+target/classes/db/h2/schema.sql
+target/classes/repositories/BookRepository.class
+target/classes/services/BookService.class
+target/classes/application.properties
+target/classes/com/prm/group6/MatadorApplication.class
+target/classes/db/h2/data.sql
+target/classes/db/h2/schema.sql
+target/classes/repositories/BookRepository.class
+target/classes/services/BookService.class
+target/surefire-reports
