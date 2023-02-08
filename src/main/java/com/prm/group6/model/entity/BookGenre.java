@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "BookGenre")
 @Data
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class BookGenre {
     @Column(name = "book_genre_id")
     private String bookGenreId;
     @Column(name = "book_id")
-    private String bookId;
+    private int bookId;
     @Column(name = "genre_id")
-    private String genreId;
+    private int genreId;
 }

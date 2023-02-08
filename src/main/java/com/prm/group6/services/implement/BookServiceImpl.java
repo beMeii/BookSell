@@ -2,6 +2,8 @@ package com.prm.group6.services.implement;
 
 import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.entity.Book;
+import com.prm.group6.model.entity.BookGenre;
+import com.prm.group6.model.entity.Genre;
 import com.prm.group6.repositories.BookGenreRepository;
 import com.prm.group6.repositories.BookRepository;
 import com.prm.group6.repositories.GenreRepository;
@@ -32,18 +34,17 @@ public class BookServiceImpl implements BookService {
         return bookDTOList;
     }
 
-    @Override
+
     public List<BookDTO> getBookListByGenreId(int genreId) {
-        return null;
+        List<BookDTO> bookDTOList = new ArrayList<>();
+        List<BookGenre> bookList = bookGenreRepository.findByGenreId(genreId);
+        bookList.forEach(bookGenre -> {
+            Book book = bookRepository.findByBookId(bookGenre.getBookId());
+            BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
+            Genre genre = genreRepository.findByGenreId(bookGenre.getGenreId());
+            b.setGenreName(genre.getGenreName());
+            bookDTOList.add(b);
+        });
+        return bookDTOList;
     }
-
-//    public List<BookDTO> getBookListByGenreId(int genreId) {
-//        List<BookDTO> bookDTOList= new ArrayList<>();
-//        List<Object[]> bookList = bookGenreRepository.findByGenreId(genreId);
-////        bookList.forEach(book -> {
-////            BookDTO b = BookMapper.INSTANCE.bookToBookDTO(book);
-////            bookDTOList.add(b);
-////        });
-//        return bookDTOList;
-
 }

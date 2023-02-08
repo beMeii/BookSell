@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "Genre")
 @Table(name = "genres")
 @Data
 @Getter

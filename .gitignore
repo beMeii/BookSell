@@ -1,20 +1,34 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-target/classes/api/OrderController.class
-target/classes/model/dto/OrderDTO.class
-target/classes/model/entity/Order.class
-target/classes/services/repository/OrderRepository.class
-*/target/**
-.idea/vcs.xml
-/target/
-.idea/compiler.xml
-target/classes/application.properties
-target/classes/db/h2/schema.sql
-target/classes/repositories/BookRepository.class
-target/classes/services/BookService.class
-target/classes/application.properties
-target/classes/com/prm/group6/MatadorApplication.class
-target/classes/db/h2/data.sql
-target/classes/db/h2/schema.sql
-target/classes/repositories/BookRepository.class
-target/classes/services/BookService.class
-target/surefire-reports
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+/.idea
