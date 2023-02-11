@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages={"com.prm.group6"})
-@ComponentScan(basePackages = "com.prm.group6")
+//@ComponentScan(basePackages = "com.prm.group6")
 @EnableAutoConfiguration
 public class MatadorApplication {
 	public static void main(String[] args) {

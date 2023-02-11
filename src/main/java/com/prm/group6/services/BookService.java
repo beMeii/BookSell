@@ -6,4 +6,5 @@ import java.util.List;
 public interface BookService {
     List<BookDTO> getBookList();
     List<BookDTO> getBookListByGenreId(int genreId);
+    List<BookDTO> getBookListByBookNameOrAuthor(String str);
 }

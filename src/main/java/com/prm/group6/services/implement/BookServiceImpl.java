@@ -29,6 +29,7 @@ public class BookServiceImpl implements BookService {
         List<Book> bookList = bookRepository.findAll();
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
+            b = getBookGenre(b);
             bookDTOList.add(b);
         });
         return bookDTOList;
@@ -41,10 +42,31 @@ public class BookServiceImpl implements BookService {
         bookList.forEach(bookGenre -> {
             Book book = bookRepository.findByBookId(bookGenre.getBookId());
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
-            Genre genre = genreRepository.findByGenreId(bookGenre.getGenreId());
-            b.setGenreName(genre.getGenreName());
+            b = getBookGenre(b);
             bookDTOList.add(b);
         });
         return bookDTOList;
     }
+
+    public List<BookDTO> getBookListByBookNameOrAuthor(String str) {
+        List<BookDTO> bookDTOList = new ArrayList<>();
+        List<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str);
+        bookList.forEach(book -> {
+            BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
+            b = getBookGenre(b);
+            bookDTOList.add(b);
+        });
+        return bookDTOList;
+    }
+    public BookDTO getBookGenre(BookDTO bookDTO){
+        List<BookGenre> bookGenreList = bookGenreRepository.findByBookId(bookDTO.getBookId());
+        List<String> genreNames = new ArrayList<>();
+        bookGenreList.forEach(bookGenre -> {
+            Genre genre = genreRepository.findByGenreId(bookGenre.getGenreId());
+            genreNames.add(genre.getGenreName());
+        });
+        bookDTO.setGenreName(genreNames);
+        return bookDTO;
+    }
+
 }
