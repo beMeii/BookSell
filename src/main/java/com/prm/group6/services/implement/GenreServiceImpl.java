@@ -5,11 +5,14 @@ import com.prm.group6.model.entity.Genre;
 import com.prm.group6.repositories.GenreRepository;
 import com.prm.group6.services.GenreService;
 import com.prm.group6.services.mappers.GenreMapper;
+import org.apache.commons.lang3.compare.ComparableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class GenreServiceImpl implements GenreService {
     @Autowired

@@ -19,6 +19,6 @@ public class BookDTO {
     private String quantityLeft;
     private String status;
     private String title;
-    private List<String> genreName;
+    private List<GenreDTO> genreName;
 
 }

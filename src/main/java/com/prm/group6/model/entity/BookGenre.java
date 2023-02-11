@@ -1,9 +1,6 @@
 package com.prm.group6.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +12,7 @@ import lombok.Setter;
 @Table(name = "book_genre")
 public class BookGenre {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_genre_id")
     private String bookGenreId;
     @Column(name = "book_id")
