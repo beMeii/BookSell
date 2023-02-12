@@ -12,15 +12,15 @@ DROP TABLE comments IF EXISTS;
 
 
 CREATE TABLE roles (
-	role_id int4 NOT NULL,
+	role_id int4 auto_increment NOT NULL,
 	role_name varchar(55) NULL,
 	CONSTRAINT roles_pkey PRIMARY KEY (role_id)
 );
 
 CREATE TABLE accounts (
-	account_id int4 NOT NULL,
+	account_id int4 auto_increment NOT NULL,
 	email varchar(255) NULL,
-	"password" varchar(255) NULL,
+	password varchar(255) NULL,
 	role_id int4 NOT NULL,
 	CONSTRAINT accounts_pkey PRIMARY KEY (account_id),
 	FOREIGN KEY (role_id) REFERENCES roles(role_id),
@@ -30,7 +30,7 @@ CREATE TABLE accounts (
 
 
 CREATE TABLE books (
-	book_id int4 NOT NULL,
+	book_id int4 auto_increment NOT NULL,
 	author varchar(255) NULL,
 	description text NULL,
 	image_link varchar(511) NULL,
@@ -44,7 +44,7 @@ CREATE TABLE books (
 
 
 CREATE TABLE genres (
-	genre_id int4 NOT NULL,
+	genre_id int4 auto_increment NOT NULL,
 	genre_name varchar(55) NULL,
 	CONSTRAINT genres_pkey PRIMARY KEY (genre_id)
 );
@@ -65,7 +65,7 @@ CREATE TABLE public.customers (
 	customer_id int4 NOT NULL,
 	birthday date NULL,
 	gender varchar(55) NULL,
-	"name" varchar(255) NULL,
+	name varchar(255) NULL,
 	status varchar(55) NULL,
 	CONSTRAINT customers_pkey PRIMARY KEY (customer_id),
 	CONSTRAINT fkjv4amvb0o59epwbh0soh2fm9k FOREIGN KEY (customer_id) REFERENCES public.accounts(account_id)
@@ -87,7 +87,7 @@ CREATE TABLE public.orders (
 	address varchar(255) NULL,
 	phone varchar(255) NULL,
 	status varchar(255) NULL,
-	"time" timestamp NULL,
+	time timestamp NULL,
 	total_amount float8 NULL,
 	customer_id int4 NULL,
 	CONSTRAINT orders_pkey PRIMARY KEY (order_id),
@@ -108,9 +108,9 @@ CREATE TABLE public.carts (
 
 CREATE TABLE comments (
 	comment_id int4 NOT NULL,
-	"content" text NULL,
+	content text NULL,
 	rating float4 NULL,
-	"timestamp" timestamp NULL,
+	timestamp timestamp NULL,
 	book_id int4 NULL,
 	customer_id int4 NULL,
 	CONSTRAINT comments_pkey PRIMARY KEY (comment_id),
