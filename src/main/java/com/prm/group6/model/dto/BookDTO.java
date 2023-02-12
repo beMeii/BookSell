@@ -2,6 +2,8 @@ package com.prm.group6.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Getter
@@ -17,6 +19,6 @@ public class BookDTO {
     private String quantityLeft;
     private String status;
     private String title;
-    private String genreName;
+    private List<GenreDTO> genreName;
 
 }

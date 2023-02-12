@@ -6,4 +6,9 @@ import java.util.List;
 public interface BookService {
     List<BookDTO> getBookList();
     List<BookDTO> getBookListByGenreId(int genreId);
+    List<BookDTO> getBookListByBookNameOrAuthor(String str);
+    BookDTO getBookById(int bookId);
+    BookDTO addNewBook(BookDTO bookDTO);
+    BookDTO updateBook(BookDTO bookDTO);
+    void deleteBook(int bookId);
 }
