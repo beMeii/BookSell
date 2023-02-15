@@ -23,4 +23,5 @@ public class Account
     private String password;
     @Column(name = "role_id")
     private int roleId;
+
 }

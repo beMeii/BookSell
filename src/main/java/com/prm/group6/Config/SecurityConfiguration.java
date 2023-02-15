@@ -28,10 +28,10 @@ public class SecurityConfiguration {
         System.out.println("Security filter run");
     http
             .csrf()
-            .ignoringRequestMatchers("/api/auth/**","/h2-console/**")
+            .ignoringRequestMatchers("/auth/**","/h2-console/**")
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**","/h2-console/**")
+            .requestMatchers("/auth/**","/h2-console/**")
             .permitAll()
             .anyRequest()
             .authenticated()
