@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.sql.Timestamp;
 
 @Builder
 @Data
@@ -12,4 +13,7 @@ import lombok.NoArgsConstructor;
 public class AccountDTO {
     private String email;
     private String password;
+    private Timestamp birthday;
+    private String gender;
+    private String name;
 }

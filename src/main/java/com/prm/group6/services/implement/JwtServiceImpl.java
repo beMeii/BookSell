@@ -24,7 +24,7 @@ private static final String SECRET_KEY="7A25432A46294A404E635266556A586E32723575
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(){
                     {
-                        put("Role","");
+                        put("Role","CUSTOMER");
                     }
                 },userDetails);
     }

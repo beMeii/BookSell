@@ -1,17 +1,19 @@
 package com.prm.group6.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Entity
+@Data
 @Table(name = "orders")
 public class Order {
     @Id
-    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private int order_id;
     @Column(name = "address")
     private String address;
@@ -24,5 +26,5 @@ public class Order {
     @Column(name = "total_amount")
     private float total_amount ;
     @Column(name = "customer_id")
-    private int customer_id;
+    private int customerId;
 }

@@ -48,9 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //nếu mà fetch được userEmail maf user chưa được authenticate thì tạo 1 cái authToken gắn cho SecurityContext
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication()==null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            System.out.println("Fetch user from database");
+            System.out.println("User fetched from database");
             if (jwtServiceImpl.isTokenValid(jwt,userDetails)){
-                System.out.println("set token");
+                System.out.println("Token is valid");
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
