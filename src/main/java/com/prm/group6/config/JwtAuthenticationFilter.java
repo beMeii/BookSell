@@ -1,4 +1,4 @@
-package com.prm.group6.Config;
+package com.prm.group6.config;
 
 import com.prm.group6.services.JwtService;
 import jakarta.servlet.FilterChain;
@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.prm.group6.services.implement.JwtServiceImpl;
 
 import java.io.IOException;
 

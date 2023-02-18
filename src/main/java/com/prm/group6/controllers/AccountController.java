@@ -1,17 +1,11 @@
 package com.prm.group6.controllers;
+import com.prm.group6.exceptions.AccountException;
 import com.prm.group6.model.dto.AccountDTO;
-import com.prm.group6.model.entity.Account;
-import com.prm.group6.repositories.AccountRepository;
-import com.prm.group6.repositories.RoleRepository;
 import com.prm.group6.services.AccountService;
-import com.prm.group6.services.implement.CustomUserDetailsService;
-import com.prm.group6.services.implement.JwtServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,7 +18,9 @@ public class AccountController {
     @PostMapping(value = "/signup")
     public ResponseEntity<?> signUp(@RequestBody AccountDTO accountDTO){
         try{
-            return new ResponseEntity<>(accountService.addNewAccount(accountDTO),HttpStatus.OK);
+            AccountDTO acc = accountService.signUp(accountDTO);
+            if (acc!=null) return new ResponseEntity<>(acc,HttpStatus.OK);
+            else return new ResponseEntity<>(AccountException.EMAIL_IS_DUPLICATE,HttpStatus.BAD_REQUEST);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -34,7 +30,9 @@ public class AccountController {
     @PostMapping(value = "/signin")
     public ResponseEntity<?> signIn(@RequestBody AccountDTO accountDTO){
         try {
-            return new ResponseEntity<>(accountService.signIn(accountDTO),HttpStatus.OK);
+            AccountDTO acc = accountService.signIn(accountDTO);
+            if (acc != null) return new ResponseEntity<>(acc,HttpStatus.OK);
+            else return new ResponseEntity<>(AccountException.WRONG_EMAIL_PASSWORD,HttpStatus.NOT_FOUND);
         }
         catch (Exception e) {
             e.printStackTrace();

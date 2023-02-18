@@ -2,14 +2,16 @@ package com.prm.group6.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Component
 @Data
 @Entity
-@Table(name = "Customer")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Customers")
 public class Customer {
     @Id
     @Column(name = "customer_id")

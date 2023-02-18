@@ -12,7 +12,6 @@ import org.mapstruct.factory.Mappers;
 public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
-
     AccountDTO accountToAccountDto(Account account);
     Account accountDtoToAccount(AccountDTO accountDTO);
 }

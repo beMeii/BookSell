@@ -1,6 +1,5 @@
-package com.prm.group6.Config;
+package com.prm.group6.config;
 
-import com.prm.group6.controllers.AccountController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +27,10 @@ public class SecurityConfiguration {
         System.out.println("Security filter run");
     http
             .csrf()
-            .ignoringRequestMatchers("/auth/**","/h2-console/**")
+            .ignoringRequestMatchers("/auth/**","/h2-console/**","/book/**")
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/auth/**","/h2-console/**")
+            .requestMatchers("/auth/**","/h2-console/**","/book/**")
             .permitAll()
             .anyRequest()
             .authenticated()
