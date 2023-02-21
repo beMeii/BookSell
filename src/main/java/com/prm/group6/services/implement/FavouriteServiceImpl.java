@@ -18,8 +18,6 @@ public class FavouriteServiceImpl implements FavouriteService {
     @Autowired
     FavouriteRepository favouriteRepository;
     @Autowired
-    AccountRepository accountRepository;
-    @Autowired
     BookRepository bookRepository;
     @Autowired
     JwtService jwtService;
