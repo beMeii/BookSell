@@ -1,9 +1,11 @@
 package com.prm.group6.controllers;
 
 import com.prm.group6.model.dto.BookDTO;
+import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.services.BookService;
+import com.prm.group6.services.CommentService;
 import com.prm.group6.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class BookController {
     BookService bookService;
     @Autowired
     GenreService genreService;
+    @Autowired
+    CommentService commentService;
     @GetMapping("/retrieve")
     public ResponseEntity<List<BookDTO>> getBookList(){
         return ResponseEntity.ok(bookService.getBookList());
@@ -52,5 +56,11 @@ public class BookController {
     @DeleteMapping("/delete/{bookId}")
     public void deleteEmployee(@PathVariable int bookId){
         bookService.deleteBook(bookId);
+    }
+
+    // comment
+    @PostMapping("/addComment")
+    public ResponseEntity<BookDTO> addComment(@RequestBody CommentDTO commentDTO){
+        return new ResponseEntity<>(bookService.addComment(commentDTO),HttpStatus.OK);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -16,9 +17,9 @@ public class BookDTO {
     private String imageLink;
     private float price;
     private String publisher;
-    private String quantityLeft;
+    private int quantityLeft;
     private String status;
     private String title;
     private List<GenreDTO> genreName;
-
+    private List<CommentDTO> comment;
 }

@@ -1,16 +1,21 @@
 package com.prm.group6.services.implement;
 
 import com.prm.group6.exceptions.BookException;
+import com.prm.group6.model.ErrorEnum;
 import com.prm.group6.model.dto.BookDTO;
+import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.model.entity.BookGenre;
+import com.prm.group6.model.entity.Comment;
 import com.prm.group6.model.entity.Genre;
 import com.prm.group6.repositories.BookGenreRepository;
 import com.prm.group6.repositories.BookRepository;
+import com.prm.group6.repositories.CommentRepository;
 import com.prm.group6.repositories.GenreRepository;
 import com.prm.group6.services.BookService;
 import com.prm.group6.services.mappers.BookMapper;
+import com.prm.group6.services.mappers.CommentMapper;
 import com.prm.group6.services.mappers.GenreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,8 @@ public class BookServiceImpl implements BookService {
     GenreRepository genreRepository;
     @Autowired
     BookGenreRepository bookGenreRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     public List<BookDTO> getBookList() {
         List<BookDTO> bookDTOList= new ArrayList<>();
@@ -67,6 +74,8 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findByBookId(bookId);
         BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
         b = getBookGenre(b);
+        List<CommentDTO> commentDTOS = getCommentByBookId(bookId);
+        b.setComment(commentDTOS);
         return b;
     }
 
@@ -94,7 +103,7 @@ public class BookServiceImpl implements BookService {
             book = BookMapper.INSTANCE.bookDtoToBook(bookDTO);
             bookRepository.save(book);
         }else {
-            System.out.println(BookException.BOOK_NOT_FOUND);
+            throw new BookException(ErrorEnum.BOOK_NOT_FOUND.getErrorMessage());
         }
         return bookDTO;
     }
@@ -103,8 +112,31 @@ public class BookServiceImpl implements BookService {
         if (Objects.nonNull(book)){
             bookRepository.deleteById(String.valueOf(id));
         }else {
-            System.out.println(BookException.BOOK_NOT_FOUND);
+            throw new BookException(ErrorEnum.BOOK_NOT_FOUND.getErrorMessage());
         }
     }
 
+    public BookDTO addComment(CommentDTO commentDTO) {
+        Comment comment = CommentMapper.INSTANCE.commentDtoToComment(commentDTO);
+        if (Objects.nonNull(comment)){
+            commentRepository.save(comment);
+        }
+        Book book = bookRepository.findByBookId(comment.getBookId());
+        BookDTO bookDTO = new BookDTO();
+        if (Objects.nonNull(book)) {
+            bookDTO = getBookById(comment.getBookId());
+        }else {
+            throw new BookException(ErrorEnum.BOOK_NOT_FOUND.getErrorMessage());
+        }
+        return bookDTO;
+    }
+    public List<CommentDTO> getCommentByBookId(int bookId){
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        List<Comment> comments = commentRepository.findByBookId(bookId);
+        comments.forEach(c->{
+            CommentDTO commentDTO = CommentMapper.INSTANCE.commentToCommentDto(c);
+            commentDTOS.add(commentDTO);
+        });
+        return commentDTOS;
+    }
 }
