@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
                 System.out.println(AccountException.EMAIL_IS_DUPLICATE);
             }
             else {
-                saveAccountToDatabas(accountDTO);
+                saveAccountToDatabase(accountDTO);
                 saveCustomerToDatabase(accountDTO);
                 return accountDTO;
             }
@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         return CustomerMapper.INSTANCE.customerToCustomerDto(customerRepository.findById(customerId));
     }
 
-    private void saveAccountToDatabas(AccountDTO accountDTO){
+    private void saveAccountToDatabase(AccountDTO accountDTO){
         Account account = AccountMapper.INSTANCE.accountDtoToAccount(accountDTO);
         //System.out.println(account);
         account.setPassword(encoder.encode(account.getPassword()));

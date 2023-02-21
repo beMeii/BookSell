@@ -1,11 +1,14 @@
 package com.prm.group6.services.implement;
 
+import com.prm.group6.model.entity.Account;
+import com.prm.group6.repositories.AccountRepository;
 import com.prm.group6.services.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,18 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
+
+    @Autowired
+    AccountRepository accountRepository;
+    private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
+
+    @Override
+    public Account getAccount(String token){
+        token = token.substring(7);
+        String userName = extractEmail(token);
+        return accountRepository.getByEmail(userName);
+    }
+
     public String extractEmail(String token) {
         return extractClaim(token,Claims::getSubject);
     }

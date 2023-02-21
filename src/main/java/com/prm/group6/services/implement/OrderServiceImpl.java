@@ -1,6 +1,7 @@
 package com.prm.group6.services.implement;
 
 import com.prm.group6.model.dto.OrderDTO;
+import com.prm.group6.model.entity.Account;
 import com.prm.group6.model.entity.Order;
 import com.prm.group6.repositories.AccountRepository;
 import com.prm.group6.repositories.OrderRepository;
@@ -23,14 +24,12 @@ public class OrderServiceImpl implements OrderService {
     AccountRepository accountRepository;
     @Override
     public List<OrderDTO> getOrderListForUser(String token) {
-//        System.out.println("Token receive in OrderService:"+token);
-        token = token.substring(7);
-        String userName=jwtService.extractEmail(token);
-//        System.out.println("Subject from token: "+ userName);
-        List<OrderDTO> orderDTOList = new ArrayList<>();
-        List<Order> orderList = orderRepository.findAllByCustomerId(accountRepository.findByEmail(userName).get().getAccountId());
+        Account acc = jwtService.getAccount(token);
+        List<OrderDTO>  orderDTOList = new ArrayList<>();
+        List<Order> orderList = orderRepository.findAllByCustomerId(acc.getAccountId());
         orderList.forEach(order -> {
             OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
+            orderDTO.setOrderId(order.getOrder_id());
             orderDTOList.add(orderDTO);
             }
         );

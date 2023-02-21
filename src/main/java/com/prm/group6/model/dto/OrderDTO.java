@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @Builder
 public class OrderDTO {
+    private int orderId;
     private String address;
     private String phone ;
     private String status ;

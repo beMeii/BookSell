@@ -30,15 +30,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     OrderRepository orderRepository;
     @Override
-    public List<OrderDetailDTO> getOrderDetails(String token, String id) {
-        token = token.substring(7);
-        String userName=jwtService.extractEmail(token);
+    public List<OrderDetailDTO> getOrderDetails(String token, int id) {
+        Account acc = jwtService.getAccount(token);
         List<OrderDetailDTO> orderDetailDTOList = new ArrayList<>();
         //-----------------------------------------------------------------
         //Check người gửi request có quyền xem details của cái order này không
-        if (accountRepository.findByEmail(userName).get().getAccountId() ==
-                orderRepository.findById(Integer.parseInt(id)).get().getCustomerId()){
-            List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(Integer.parseInt(id));
+        if (acc.getAccountId() == orderRepository.findById(id).get().getCustomerId()){
+            List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(id);
             orderDetailList.forEach(OrderDetail -> {
                         OrderDetailDTO orderDetailDTO = OrderDetailMapper.INSTANCE.orderDetailToOrderDetailDto(OrderDetail);
                         Book book = bookRepository.findByBookId(OrderDetail.getBookId());

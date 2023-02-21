@@ -3,7 +3,6 @@ package com.prm.group6.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 
 @Component

@@ -1,5 +1,6 @@
 package com.prm.group6.services;
 
+import com.prm.group6.model.entity.Account;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public interface JwtService {
+    Account getAccount(String token);
     String extractEmail(String token);
     String generateToken(UserDetails userDetails);
     String generateToken(
