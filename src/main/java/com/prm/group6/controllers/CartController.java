@@ -20,20 +20,20 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCart(token));
     }
 
-    @GetMapping("/add/{id}/{value}")
+    @PostMapping("/add/{id}/{value}")
     public ResponseEntity<List<CartDTO>> addItem(@RequestHeader(name = "Authorization") String token, @PathVariable(name = "id") int bookId,@PathVariable(name = "value") int value){
         return ResponseEntity.ok(cartService.addItemToCart(token,bookId,value));
     }
 
-    @GetMapping("/delete/{id}/{value}")
+    @DeleteMapping("/{id}/{value}")
     public ResponseEntity<List<CartDTO>> deleteItem(@RequestHeader(name = "Authorization") String token, @PathVariable(name = "id") int bookId,@PathVariable(name = "value") int value){
         return ResponseEntity.ok(cartService.deleteItemFromCart(token,bookId,value));
     }
-    @GetMapping("/delete/item/{id}")
+    @DeleteMapping("/item/{id}")
     public ResponseEntity<List<CartDTO>> deleteCartItem(@RequestHeader(name = "Authorization") String token, @PathVariable(name = "id") int bookId){
         return ResponseEntity.ok(cartService.deleteCartItem(token,bookId));
     }
-    @GetMapping("/delete/cart")
+    @DeleteMapping("/cart")
     public ResponseEntity<List<CartDTO>> deleteCartItem(@RequestHeader(name = "Authorization") String token){
         return ResponseEntity.ok(cartService.deleteCart(token));
     }

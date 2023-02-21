@@ -17,11 +17,11 @@ public class FavouriteController {
     public ResponseEntity<List<BookDTO>> getFavouriteList(@RequestHeader(name="Authorization") String token){
         return ResponseEntity.ok(favouriteService.getFavouriteList(token));
     }
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<List<BookDTO>> addFavouriteBook(@RequestHeader(name="Authorization") String token,@PathVariable("id") int bookId){
         return ResponseEntity.ok(favouriteService.addFavourite(token,bookId));
     }
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<List<BookDTO>> removeFavourite(@RequestHeader(name="Authorization") String token,@PathVariable("id") int bookId) {
         return ResponseEntity.ok(favouriteService.removeFavourite(token, bookId));
     }
