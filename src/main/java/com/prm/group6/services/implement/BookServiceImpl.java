@@ -18,6 +18,9 @@ import com.prm.group6.services.mappers.BookMapper;
 import com.prm.group6.services.mappers.CommentMapper;
 import com.prm.group6.services.mappers.GenreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,9 +39,10 @@ public class BookServiceImpl implements BookService {
     @Autowired
     CommentRepository commentRepository;
 
-    public List<BookDTO> getBookList() {
+    public List<BookDTO> getBookList(int pageNo, int pageSize) {
         List<BookDTO> bookDTOList= new ArrayList<>();
-        List<Book> bookList = bookRepository.findAll();
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Book> bookList = bookRepository.findAll(pageable);
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
             b = getBookGenre(b);
@@ -60,9 +64,10 @@ public class BookServiceImpl implements BookService {
         return bookDTOList;
     }
 
-    public List<BookDTO> getBookListByBookNameOrAuthor(String str) {
+    public List<BookDTO> getBookListByBookNameOrAuthor(String str,int pageNo, int pageSize) {
         List<BookDTO> bookDTOList = new ArrayList<>();
-        List<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str, pageable);
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
             b = getBookGenre(b);

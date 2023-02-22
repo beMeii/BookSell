@@ -8,6 +8,9 @@ import com.prm.group6.services.BookService;
 import com.prm.group6.services.CommentService;
 import com.prm.group6.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,9 @@ public class BookController {
     @Autowired
     CommentService commentService;
     @GetMapping("/retrieve")
-    public ResponseEntity<List<BookDTO>> getBookList(){
-        return ResponseEntity.ok(bookService.getBookList());
+    public ResponseEntity<List<BookDTO>> getBookList(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return ResponseEntity.ok(bookService.getBookList(pageNo, pageSize));
     }
     @GetMapping("/genre")
     public ResponseEntity<List<GenreDTO>> getGenreList(){
@@ -38,8 +42,10 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookListByGenreId(genreId));
     }
     @GetMapping("/search")
-    public ResponseEntity<List<BookDTO>> getBookListByBookNameOrAuthor(@RequestParam("query") String query){
-        return new ResponseEntity<>(bookService.getBookListByBookNameOrAuthor(query), HttpStatus.OK);
+    public ResponseEntity<List<BookDTO>> getBookListByBookNameOrAuthor(@RequestParam("query") String query,
+                                                                       @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return new ResponseEntity<>(bookService.getBookListByBookNameOrAuthor(query,pageNo, pageSize), HttpStatus.OK);
     }
     @GetMapping("/view/{bookId}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable("bookId") int bookId){
