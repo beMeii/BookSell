@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,14 +28,15 @@ public class SecurityConfiguration {
         System.out.println("Security filter run");
     http
             .csrf()
-            .ignoringRequestMatchers("/auth/**","/h2-console/**","/book/**")
-            .and()
+            .disable()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**","/h2-console/**","/book/**")
             .permitAll()
             .anyRequest()
             .authenticated()
             .and()
+            .httpBasic();
+    http
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()

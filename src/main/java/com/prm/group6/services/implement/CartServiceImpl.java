@@ -76,7 +76,8 @@ public class CartServiceImpl implements CartService {
             };
             return getCart(token);
         }
-        else return null;
+        else
+            return null;
     }
 
     @Override

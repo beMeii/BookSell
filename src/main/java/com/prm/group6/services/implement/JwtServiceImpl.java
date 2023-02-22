@@ -23,7 +23,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Autowired
     AccountRepository accountRepository;
-    private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
+        private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
 
     @Override
     public Account getAccount(String token){

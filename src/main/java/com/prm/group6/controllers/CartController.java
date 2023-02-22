@@ -1,8 +1,6 @@
 package com.prm.group6.controllers;
 
-import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.dto.CartDTO;
-import com.prm.group6.repositories.CartRepository;
 import com.prm.group6.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
