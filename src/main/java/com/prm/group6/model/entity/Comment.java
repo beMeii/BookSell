@@ -17,11 +17,11 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private String commentId;
+    private int commentId;
     @Column(name = "content")
     private String content;
     @Column(name = "rating")
-    private int rating;
+    private float rating;
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
     @Column(name = "book_id",nullable = false)

@@ -52,9 +52,9 @@ public class AuthServiceImpl implements AuthService {
 
     private void saveAccountToDatabase(AccountDTO accountDTO){
         Account account = AccountMapper.INSTANCE.accountDtoToAccount(accountDTO);
-        //System.out.println(account);
         account.setPassword(encoder.encode(account.getPassword()));
         account.setRoleId(roleRepository.findByRoleName("CUSTOMER").getRoleId());
+        System.out.println(account);
         accountRepository.save(account);
     }
     private void saveCustomerToDatabase(AccountDTO accountDTO){

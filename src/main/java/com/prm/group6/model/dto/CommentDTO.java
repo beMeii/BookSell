@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class CommentDTO {
-    private String commentId;
+    private int commentId;
     private String content;
-    private int rating;
+    private float rating;
     private LocalDateTime timestamp;
     @NonNull
     private int bookId;

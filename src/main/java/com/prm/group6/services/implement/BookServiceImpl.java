@@ -20,6 +20,7 @@ import com.prm.group6.services.mappers.GenreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -118,7 +119,8 @@ public class BookServiceImpl implements BookService {
 
     public BookDTO addComment(CommentDTO commentDTO) {
         Comment comment = CommentMapper.INSTANCE.commentDtoToComment(commentDTO);
-        if (Objects.nonNull(comment)){
+        comment.setTimestamp(LocalDateTime.now());
+        if (Objects.nonNull(comment.getCommentId())){
             commentRepository.save(comment);
         }
         Book book = bookRepository.findByBookId(comment.getBookId());
