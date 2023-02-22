@@ -21,7 +21,7 @@ public class Comment {
     @Column(name = "content")
     private String content;
     @Column(name = "rating")
-    private float rating;
+    private double rating;
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
     @Column(name = "book_id",nullable = false)

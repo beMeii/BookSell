@@ -22,4 +22,5 @@ public class BookDTO {
     private String title;
     private List<GenreDTO> genreName;
     private List<CommentDTO> comment;
+    private double rating;
 }

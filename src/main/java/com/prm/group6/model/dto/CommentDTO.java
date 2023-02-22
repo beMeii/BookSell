@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CommentDTO {
     private int commentId;
     private String content;
-    private float rating;
+    private double rating;
     private LocalDateTime timestamp;
     @NonNull
     private int bookId;

@@ -77,6 +77,8 @@ public class BookServiceImpl implements BookService {
         b = getBookGenre(b);
         List<CommentDTO> commentDTOS = getCommentByBookId(bookId);
         b.setComment(commentDTOS);
+        double avg = commentRepository.avg(bookId);
+        b.setRating(avg);
         return b;
     }
 
@@ -132,6 +134,7 @@ public class BookServiceImpl implements BookService {
         }
         return bookDTO;
     }
+
     public List<CommentDTO> getCommentByBookId(int bookId){
         List<CommentDTO> commentDTOS = new ArrayList<>();
         List<Comment> comments = commentRepository.findByBookId(bookId);
