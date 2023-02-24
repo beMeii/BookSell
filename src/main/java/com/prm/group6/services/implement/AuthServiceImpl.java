@@ -14,6 +14,9 @@ import com.prm.group6.services.mappers.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -25,8 +28,9 @@ public class AuthServiceImpl implements AuthService {
     private CustomerRepository customerRepository;
     @Autowired
     private PasswordEncoder encoder ;
+    @Transactional
     @Override
-    public AccountDTO addCustomerAccount(AccountDTO accountDTO) {
+    public AccountDTO addCustomerAccount(@Valid AccountDTO accountDTO) {
         try{
             if(accountRepository.existsByEmail(accountDTO.getEmail())){
                 System.out.println(AccountException.EMAIL_IS_DUPLICATE);
@@ -54,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         Account account = AccountMapper.INSTANCE.accountDtoToAccount(accountDTO);
         account.setPassword(encoder.encode(account.getPassword()));
         account.setRoleId(roleRepository.findByRoleName("CUSTOMER").getRoleId());
-        System.out.println(account);
+//        System.out.println(account);
         accountRepository.save(account);
     }
     private void saveCustomerToDatabase(AccountDTO accountDTO){

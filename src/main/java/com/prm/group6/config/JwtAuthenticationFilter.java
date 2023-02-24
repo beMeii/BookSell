@@ -28,11 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-        if (request.getRequestURI().startsWith("/h2-console/")) {
-            System.out.println("Acessing h2-console");
+        if (request.getRequestURI().startsWith("/h2-console")) {
             filterChain.doFilter(request, response);
             return;
         }
+        System.out.println("-----------------------");
         System.out.println("Token check");
         // check coi nó có gắn token dô cái request chưa
         if (authHeader==null || !authHeader.startsWith("Bearer ")){
@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+            System.out.println("-----------------------");
         }
         filterChain.doFilter(request,response);
     }

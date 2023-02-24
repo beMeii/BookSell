@@ -10,6 +10,7 @@ import com.prm.group6.services.CartService;
 import com.prm.group6.services.JwtService;
 import com.prm.group6.services.mappers.BookMapper;
 import com.prm.group6.services.mappers.CartMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartDTO> addItemToCart(String token, int bookId, int value) {
+    public List<@Valid CartDTO> addItemToCart(String token, int bookId, int value) {
         Account acc = jwtService.getAccount(token);
         Cart c = cartRepository.findByAccount_AccountIdAndBook_BookId(acc.getAccountId(),bookId); // kiểm tra món đó có trong giỏ hàng ch
         //trường hợp chưa có

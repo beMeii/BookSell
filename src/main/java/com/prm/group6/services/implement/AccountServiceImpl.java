@@ -1,7 +1,6 @@
 package com.prm.group6.services.implement;
 import com.prm.group6.exceptions.AccountException;
 import com.prm.group6.model.dto.AccountDTO;
-import com.prm.group6.repositories.CustomerRepository;
 import com.prm.group6.services.AccountService;
 import com.prm.group6.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 
 @Service
+@Validated
 public class AccountServiceImpl implements AccountService
 {
     @Autowired
@@ -23,7 +26,7 @@ public class AccountServiceImpl implements AccountService
     @Autowired
     private AuthService authService;
 
-    public AccountDTO signUp(AccountDTO accountDTO){
+    public AccountDTO signUp(@Valid AccountDTO accountDTO){
         try {
             return authService.addCustomerAccount(accountDTO);
         }
@@ -33,7 +36,7 @@ public class AccountServiceImpl implements AccountService
         return null;
     }
 
-    public AccountDTO signIn(AccountDTO signInDTO){
+    public AccountDTO signIn(@Valid AccountDTO signInDTO){
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

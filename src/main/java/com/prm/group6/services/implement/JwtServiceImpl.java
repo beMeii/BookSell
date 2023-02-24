@@ -1,7 +1,9 @@
 package com.prm.group6.services.implement;
 
 import com.prm.group6.model.entity.Account;
+import com.prm.group6.model.entity.Customer;
 import com.prm.group6.repositories.AccountRepository;
+import com.prm.group6.repositories.CustomerRepository;
 import com.prm.group6.services.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +25,9 @@ public class JwtServiceImpl implements JwtService {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
         private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
 
     @Override
@@ -31,6 +36,12 @@ public class JwtServiceImpl implements JwtService {
         String userName = extractEmail(token);
         return accountRepository.getByEmail(userName);
     }
+
+    @Override
+    public Customer getCustomer(String token) {
+        return customerRepository.getById(getAccount(token).getAccountId());
+    }
+
 
     public String extractEmail(String token) {
         return extractClaim(token,Claims::getSubject);
