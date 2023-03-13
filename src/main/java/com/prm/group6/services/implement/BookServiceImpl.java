@@ -100,7 +100,6 @@ public class BookServiceImpl implements BookService {
     }
 
     public BookDTO addNewBook(BookDTO bookDTO) {
-        System.out.println("testing");
         Book book = BookMapper.INSTANCE.bookDtoToBook(bookDTO);
         bookRepository.save(book);
         return bookDTO;
