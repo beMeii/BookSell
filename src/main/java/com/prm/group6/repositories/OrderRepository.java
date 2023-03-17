@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findAllByCustomerId(int customerId, Pageable pageable);
+
+    Order findByOrderId(int orderId);
 }

@@ -1,5 +1,6 @@
 package com.prm.group6.services.implement;
 
+import com.prm.group6.model.OrderStatusEnum;
 import com.prm.group6.model.dto.*;
 import com.prm.group6.model.entity.*;
 import com.prm.group6.repositories.*;
@@ -59,6 +60,42 @@ public class OrderServiceImpl implements OrderService {
             orderDetailDTO.setBook(bookDTO);
             orderDetailDTOList.add(orderDetailDTO);
             }
+        );
+        return orderDetailDTOList;
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrder(int pageNo, int pageSize, String sort, String sortType) {
+        List<OrderDTO>  orderDTOList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNo,pageSize, Sort.by(sort).descending());
+        orderRepository.findAll(pageable).forEach(order -> {
+                    OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
+                    orderDTO.setOrderId(order.getOrderId());
+                    orderDTOList.add(orderDTO);
+                }
+        );
+        return orderDTOList;
+    }
+
+    @Override
+    public OrderDTO changeStatus(int orderId, OrderStatusEnum status) {
+        Order order = orderRepository.findByOrderId(orderId);
+        order.setStatus(status.name());
+        orderRepository.save(order);
+        return OrderMapper.INSTANCE.orderToOrderDto(order);
+    }
+
+    @Override
+    public List<OrderDetailDTO> adminGetOrderDetails(int id) {
+        List<OrderDetailDTO> orderDetailDTOList = new ArrayList<>();
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_OrderId(id);
+        orderDetailList.forEach(orderDetail -> {
+                    Book book = orderDetail.getBook();
+                    OrderDetailDTO orderDetailDTO = OrderDetailMapper.INSTANCE.orderDetailToOrderDetailDto(orderDetail);
+                    BookDTO bookDTO = BookMapper.INSTANCE.bookToBookDto(book);
+                    orderDetailDTO.setBook(bookDTO);
+                    orderDetailDTOList.add(orderDetailDTO);
+                }
         );
         return orderDetailDTOList;
     }
