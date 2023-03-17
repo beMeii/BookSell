@@ -12,4 +12,5 @@ import java.util.List;
 public class ListResponse {
     private int totalPage;
     private List<BookDTO> listBook;
+    private List<CustomerDTO> listCustomer;
 }
