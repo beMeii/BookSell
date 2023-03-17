@@ -18,7 +18,7 @@ public class OrderController {
     @GetMapping("/get")
     public ResponseEntity<List<OrderDTO>> getOrders(@RequestHeader(name="Authorization") String token,
                                                     @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                    @RequestParam(value = "pageSize", defaultValue = "1000000", required = false) int pageSize,
                                                     @RequestParam(value = "sort", defaultValue = "time", required = false) String sort){
         return ResponseEntity.ok(orderService.getOrderListForUser(token,pageNo,pageSize,sort));
     }
