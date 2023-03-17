@@ -29,10 +29,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .getRoles()
 //                .stream()
 //                .map((role) -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
-        Role role = roleRepository.findByRoleName("CUSTOMER");
+        Role role = roleRepository.findByRoleId(String.valueOf(user.getRoleId()));
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-//        System.out.println(authorities.toString());
+        System.out.println(authorities.toString());
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),authorities);
     }
 }

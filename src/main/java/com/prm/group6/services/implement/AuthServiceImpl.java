@@ -69,4 +69,7 @@ public class AuthServiceImpl implements AuthService {
         customerRepository.save(customer);
     }
 
+    public void addAdminAccount(Account account){
+
+    }
 }
