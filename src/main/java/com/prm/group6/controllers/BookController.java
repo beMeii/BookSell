@@ -45,8 +45,10 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<ListResponse> getBookListByBookNameOrAuthor(@RequestParam("query") String query,
                                                                       @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
-        return new ResponseEntity<>(bookService.getBookListByBookNameOrAuthor(query,pageNo, pageSize), HttpStatus.OK);
+                                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                                      @RequestParam(value = "sort", defaultValue = "title",required = false) String sort,
+                                                                      @RequestParam(value = "sortType", defaultValue = "ASC",required = false) String sortType){
+        return new ResponseEntity<>(bookService.getBookListByBookNameOrAuthor(query,pageNo, pageSize,sort, sortType), HttpStatus.OK);
     }
     @GetMapping("/view/{bookId}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable("bookId") int bookId){
