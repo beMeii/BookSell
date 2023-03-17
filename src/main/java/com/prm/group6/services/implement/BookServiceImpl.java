@@ -5,6 +5,7 @@ import com.prm.group6.model.ErrorEnum;
 import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
+import com.prm.group6.model.dto.ListResponse;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.model.entity.BookGenre;
 import com.prm.group6.model.entity.Comment;
@@ -39,7 +40,8 @@ public class BookServiceImpl implements BookService {
     @Autowired
     CommentRepository commentRepository;
 
-    public List<BookDTO> getBookList(int pageNo, int pageSize) {
+    public ListResponse getBookList(int pageNo, int pageSize) {
+        ListResponse listResponse = new ListResponse();
         List<BookDTO> bookDTOList= new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Book> bookList = bookRepository.findAll(pageable);
@@ -48,7 +50,9 @@ public class BookServiceImpl implements BookService {
             b = getBookGenre(b);
             bookDTOList.add(b);
         });
-        return bookDTOList;
+        listResponse.setListBook(bookDTOList);
+        listResponse.setTotalPage(bookList.getTotalPages());
+        return listResponse;
     }
 
 
@@ -64,7 +68,8 @@ public class BookServiceImpl implements BookService {
         return bookDTOList;
     }
 
-    public List<BookDTO> getBookListByBookNameOrAuthor(String str,int pageNo, int pageSize) {
+    public ListResponse getBookListByBookNameOrAuthor(String str, int pageNo, int pageSize) {
+        ListResponse listResponse = new ListResponse();
         List<BookDTO> bookDTOList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str, pageable);
@@ -73,7 +78,9 @@ public class BookServiceImpl implements BookService {
             b = getBookGenre(b);
             bookDTOList.add(b);
         });
-        return bookDTOList;
+        listResponse.setListBook(bookDTOList);
+        listResponse.setTotalPage(bookList.getTotalPages());
+        return listResponse;
     }
 
     public BookDTO getBookById(int bookId) {

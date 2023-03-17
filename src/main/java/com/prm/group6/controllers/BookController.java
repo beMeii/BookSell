@@ -3,6 +3,7 @@ package com.prm.group6.controllers;
 import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
+import com.prm.group6.model.dto.ListResponse;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.services.BookService;
 import com.prm.group6.services.CommentService;
@@ -29,7 +30,7 @@ public class BookController {
     @Autowired
     CommentService commentService;
     @GetMapping("/retrieve")
-    public ResponseEntity<List<BookDTO>> getBookList(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+    public ResponseEntity<ListResponse> getBookList(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return ResponseEntity.ok(bookService.getBookList(pageNo, pageSize));
     }
@@ -42,9 +43,9 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookListByGenreId(genreId));
     }
     @GetMapping("/search")
-    public ResponseEntity<List<BookDTO>> getBookListByBookNameOrAuthor(@RequestParam("query") String query,
-                                                                       @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+    public ResponseEntity<ListResponse> getBookListByBookNameOrAuthor(@RequestParam("query") String query,
+                                                                      @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
         return new ResponseEntity<>(bookService.getBookListByBookNameOrAuthor(query,pageNo, pageSize), HttpStatus.OK);
     }
     @GetMapping("/view/{bookId}")
