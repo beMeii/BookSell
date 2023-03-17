@@ -28,7 +28,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Autowired
     CustomerRepository customerRepository;
-        private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
+    private static final String SECRET_KEY="7A25432A46294A404E635266556A586E3272357538782F413F4428472B4B6150";
 
     @Override
     public Account getAccount(String token){
@@ -46,10 +46,10 @@ public class JwtServiceImpl implements JwtService {
     public String extractEmail(String token) {
         return extractClaim(token,Claims::getSubject);
     }
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails,String role){
         return generateToken(new HashMap<>(){
                     {
-                        put("Role","CUSTOMER");
+                        put("Role",role);
                     }
                 },userDetails);
     }

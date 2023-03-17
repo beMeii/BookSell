@@ -18,4 +18,5 @@ public class CommentDTO {
     private int bookId;
     @NonNull
     private int customerId;
+    private String name;
 }

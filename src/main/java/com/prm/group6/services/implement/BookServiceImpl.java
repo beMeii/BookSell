@@ -2,17 +2,16 @@ package com.prm.group6.services.implement;
 
 import com.prm.group6.exceptions.BookException;
 import com.prm.group6.model.ErrorEnum;
+import com.prm.group6.model.SortTypeEnum;
 import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
+import com.prm.group6.model.dto.ListResponse;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.model.entity.BookGenre;
 import com.prm.group6.model.entity.Comment;
 import com.prm.group6.model.entity.Genre;
-import com.prm.group6.repositories.BookGenreRepository;
-import com.prm.group6.repositories.BookRepository;
-import com.prm.group6.repositories.CommentRepository;
-import com.prm.group6.repositories.GenreRepository;
+import com.prm.group6.repositories.*;
 import com.prm.group6.services.BookService;
 import com.prm.group6.services.mappers.BookMapper;
 import com.prm.group6.services.mappers.CommentMapper;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,17 +38,30 @@ public class BookServiceImpl implements BookService {
     BookGenreRepository bookGenreRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    CustomerRepository customerRepository;
 
-    public List<BookDTO> getBookList(int pageNo, int pageSize) {
+    public ListResponse getBookList(int pageNo, int pageSize, String sort, String sortType) {
+        ListResponse listResponse = new ListResponse();
         List<BookDTO> bookDTOList= new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable;
+        if (SortTypeEnum.DESC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        }
+        if (SortTypeEnum.ASC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        }else {
+            throw new BookException(ErrorEnum.ERROR_SORT_TYPE.getErrorMessage());
+        }
         Page<Book> bookList = bookRepository.findAll(pageable);
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
-            b = getBookGenre(b);
+            b= getBookById(b.getBookId());
             bookDTOList.add(b);
         });
-        return bookDTOList;
+        listResponse.setListBook(bookDTOList);
+        listResponse.setTotalPage(bookList.getTotalPages());
+        return listResponse;
     }
 
 
@@ -64,16 +77,25 @@ public class BookServiceImpl implements BookService {
         return bookDTOList;
     }
 
-    public List<BookDTO> getBookListByBookNameOrAuthor(String str,int pageNo, int pageSize) {
+    public ListResponse getBookListByBookNameOrAuthor(String str, int pageNo, int pageSize, String sort, String sortType) {
+        ListResponse listResponse = new ListResponse();
         List<BookDTO> bookDTOList = new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable;
+        if (SortTypeEnum.DESC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        }else if (SortTypeEnum.ASC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        }else {
+            throw new BookException(ErrorEnum.ERROR_SORT_TYPE.getErrorMessage());
+        }
         Page<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str, pageable);
         bookList.forEach(book -> {
-            BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
-            b = getBookGenre(b);
+            BookDTO b= getBookById(book.getBookId());
             bookDTOList.add(b);
         });
-        return bookDTOList;
+        listResponse.setListBook(bookDTOList);
+        listResponse.setTotalPage(bookList.getTotalPages());
+        return listResponse;
     }
 
     public BookDTO getBookById(int bookId) {
@@ -81,9 +103,11 @@ public class BookServiceImpl implements BookService {
         BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
         b = getBookGenre(b);
         List<CommentDTO> commentDTOS = getCommentByBookId(bookId);
-        b.setComment(commentDTOS);
-        double avg = commentRepository.avg(bookId);
-        b.setRating(avg);
+        if(!commentDTOS.isEmpty()){
+            b.setComment(commentDTOS);
+            double avg = commentRepository.avg(bookId);
+            b.setRating(avg);
+        }
         return b;
     }
 
@@ -145,6 +169,8 @@ public class BookServiceImpl implements BookService {
         List<Comment> comments = commentRepository.findByBookId(bookId);
         comments.forEach(c->{
             CommentDTO commentDTO = CommentMapper.INSTANCE.commentToCommentDto(c);
+            String name = customerRepository.findNameByCustomerId(c.getCustomerId());
+            commentDTO.setName(name);
             commentDTOS.add(commentDTO);
         });
         return commentDTOS;

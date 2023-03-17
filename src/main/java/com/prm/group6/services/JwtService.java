@@ -14,7 +14,7 @@ public interface JwtService {
     Account getAccount(String token);
     Customer getCustomer(String token);
     String extractEmail(String token);
-    String generateToken(UserDetails userDetails);
+    String generateToken(UserDetails userDetails,String role);
     String generateToken(
             Map<String,Object> extraClaims
             ,UserDetails userDetails);

@@ -3,6 +3,7 @@ import com.prm.group6.exceptions.AccountException;
 import com.prm.group6.model.dto.AccountDTO;
 import com.prm.group6.services.AccountService;
 import com.prm.group6.services.AuthService;
+import com.prm.group6.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,7 +23,7 @@ public class AccountServiceImpl implements AccountService
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private JwtServiceImpl jwtService;
+    private JwtService jwtService;
     @Autowired
     private AuthService authService;
 
@@ -45,7 +46,7 @@ public class AccountServiceImpl implements AccountService
                     )
             );
             var UserDetails = customUserDetailsService.loadUserByUsername(signInDTO.getEmail());
-            signInDTO.setToken(jwtService.generateToken(UserDetails));
+            signInDTO.setToken(jwtService.generateToken(UserDetails,UserDetails.getAuthorities().toString()));
             signInDTO.setCustomerDetail(authService.getCustomerDetails(signInDTO));
             return signInDTO;
         } catch (BadCredentialsException e){
