@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
         Page<Book> bookList = bookRepository.findAll(pageable);
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
-            b = getBookGenre(b);
+            b= getBookById(b.getBookId());
             bookDTOList.add(b);
         });
         listResponse.setListBook(bookDTOList);
@@ -74,8 +74,8 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str, pageable);
         bookList.forEach(book -> {
-            BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
-            b = getBookGenre(b);
+//            BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
+            BookDTO b= getBookById(book.getBookId());
             bookDTOList.add(b);
         });
         listResponse.setListBook(bookDTOList);
@@ -88,9 +88,11 @@ public class BookServiceImpl implements BookService {
         BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
         b = getBookGenre(b);
         List<CommentDTO> commentDTOS = getCommentByBookId(bookId);
-        b.setComment(commentDTOS);
-        double avg = commentRepository.avg(bookId);
-        b.setRating(avg);
+        if(!commentDTOS.isEmpty()){
+            b.setComment(commentDTOS);
+            double avg = commentRepository.avg(bookId);
+            b.setRating(avg);
+        }
         return b;
     }
 
