@@ -19,8 +19,7 @@ public class Customer {
     @Id
     @Column(name = "customer_id")
     private int customerId;
-    @Column(name = "birthday", nullable = false)
-    @NotNull
+    @Column(name = "birthday", nullable = true)
     private Timestamp birthday;
     @Column(name = "gender", nullable = false)
     @NotNull
