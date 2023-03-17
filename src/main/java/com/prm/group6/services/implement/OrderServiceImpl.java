@@ -12,8 +12,10 @@ import com.prm.group6.services.mappers.OrderMapper;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.data.domain.PageRequest;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,10 +33,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     CartService cartService;
     @Override
-    public List<@Valid OrderDTO> getOrderListForUser(String token) {
+    public List<@Valid OrderDTO> getOrderListForUser(String token, int pageNo, int pageSize, String sort) {
         Account acc = jwtService.getAccount(token);
         List<OrderDTO>  orderDTOList = new ArrayList<>();
-        List<Order> orderList = orderRepository.findAllByCustomerId(acc.getAccountId());
+        Pageable pageable = PageRequest.of(pageNo,pageSize, Sort.by(sort).descending());
+        List<Order> orderList = orderRepository.findAllByCustomerId(acc.getAccountId(),pageable);
         orderList.forEach(order -> {
             OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
             orderDTO.setOrderId(order.getOrderId());
@@ -44,10 +47,11 @@ public class OrderServiceImpl implements OrderService {
         return orderDTOList;
     }
     @Override
-    public List<OrderDetailDTO> getOrderDetails(String token, int id) {
+    public List<OrderDetailDTO> getOrderDetails(String token, int id, int pageNo, int pageSize) {
         Account acc = jwtService.getAccount(token);
         List<OrderDetailDTO> orderDetailDTOList = new ArrayList<>();
-        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_OrderIdAndOrder_CustomerId(id, acc.getAccountId());
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_OrderIdAndOrder_CustomerId(id, acc.getAccountId(),pageable);
         orderDetailList.forEach(orderDetail -> {
             Book book = orderDetail.getBook();
             OrderDetailDTO orderDetailDTO = OrderDetailMapper.INSTANCE.orderDetailToOrderDetailDto(orderDetail);

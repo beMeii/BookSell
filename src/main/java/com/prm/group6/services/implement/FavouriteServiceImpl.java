@@ -10,6 +10,9 @@ import com.prm.group6.services.FavouriteService;
 import com.prm.group6.services.JwtService;
 import com.prm.group6.services.mappers.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +25,11 @@ public class FavouriteServiceImpl implements FavouriteService {
     @Autowired
     JwtService jwtService;
     @Override
-    public List<BookDTO> getFavouriteList(String token) {
+    public List<BookDTO> getFavouriteList(String token,int pageNo,int pageSize) {
         Account acc = jwtService.getAccount(token);
         List<BookDTO> favouriteBookList = new ArrayList<>();
-        List<Favourite> favouriteList = favouriteRepository.findAllByAccountAccountId(acc.getAccountId());
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<Favourite> favouriteList = favouriteRepository.findAllByAccountAccountId(acc.getAccountId(),pageable);
         favouriteList.forEach(favourite -> {
             BookDTO bookDTO = BookMapper.INSTANCE.bookToBookDto(favourite.getBook());
             favouriteBookList.add(bookDTO);
@@ -45,7 +49,7 @@ public class FavouriteServiceImpl implements FavouriteService {
             favourite.setAccount(acc);
             favouriteRepository.save(favourite);
         }
-        return getFavouriteList(token);
+        return getFavouriteList(token,0,10);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class FavouriteServiceImpl implements FavouriteService {
         Account acc = jwtService.getAccount(token);
         Favourite favourite = favouriteRepository.findByAccount_AccountIdAndBook_BookId(acc.getAccountId(),bookId);
         favouriteRepository.delete(favourite);
-        return getFavouriteList(token);
+        return getFavouriteList(token,0,10);
     }
 
 }
