@@ -5,22 +5,15 @@ import com.prm.group6.model.dto.CommentDTO;
 import com.prm.group6.model.dto.GenreDTO;
 import com.prm.group6.model.dto.ListResponse;
 import com.prm.group6.model.entity.Account;
-import com.prm.group6.model.entity.Book;
 import com.prm.group6.services.BookService;
-import com.prm.group6.services.CommentService;
 import com.prm.group6.services.GenreService;
 import com.prm.group6.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/book")

@@ -1,10 +1,7 @@
 package com.prm.group6.controllers;
 
-
-import com.prm.group6.model.dto.CustomerDTO;
 import com.prm.group6.model.dto.CustomerUpdateStatusRequest;
 import com.prm.group6.model.dto.ListResponse;
-import com.prm.group6.model.entity.Account;
 import com.prm.group6.model.entity.Customer;
 import com.prm.group6.services.BookService;
 import com.prm.group6.services.CustomerService;
