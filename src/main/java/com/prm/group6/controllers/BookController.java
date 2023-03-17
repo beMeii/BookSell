@@ -27,12 +27,12 @@ public class BookController {
     BookService bookService;
     @Autowired
     GenreService genreService;
-    @Autowired
-    CommentService commentService;
     @GetMapping("/retrieve")
     public ResponseEntity<ListResponse> getBookList(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
-        return ResponseEntity.ok(bookService.getBookList(pageNo, pageSize));
+                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                    @RequestParam(value = "sort", defaultValue = "title",required = false) String sort,
+                                                    @RequestParam(value = "sortType", defaultValue = "ASC",required = false) String sortType){
+        return ResponseEntity.ok(bookService.getBookList(pageNo, pageSize, sort, sortType));
     }
     @GetMapping("/genre")
     public ResponseEntity<List<GenreDTO>> getGenreList(){

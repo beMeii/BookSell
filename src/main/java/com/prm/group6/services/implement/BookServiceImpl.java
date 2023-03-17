@@ -41,10 +41,18 @@ public class BookServiceImpl implements BookService {
     @Autowired
     CustomerRepository customerRepository;
 
-    public ListResponse getBookList(int pageNo, int pageSize) {
+    public ListResponse getBookList(int pageNo, int pageSize, String sort, String sortType) {
         ListResponse listResponse = new ListResponse();
         List<BookDTO> bookDTOList= new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable;
+        if (SortTypeEnum.DESC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        }
+        if (SortTypeEnum.ASC.name().equals(sortType)){
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
+        }else {
+            throw new BookException(ErrorEnum.ERROR_SORT_TYPE.getErrorMessage());
+        }
         Page<Book> bookList = bookRepository.findAll(pageable);
         bookList.forEach(book -> {
             BookDTO b = BookMapper.INSTANCE.bookToBookDto(book);
