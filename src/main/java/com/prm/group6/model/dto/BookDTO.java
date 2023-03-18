@@ -1,5 +1,6 @@
 package com.prm.group6.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;

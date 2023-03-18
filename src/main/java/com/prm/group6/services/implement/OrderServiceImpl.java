@@ -89,14 +89,25 @@ public class OrderServiceImpl implements OrderService {
         int customerId = order.getCustomerId();
         String deviceToken = customerRepository.findDeviceTokenByCustomerId(customerId);
 
-        System.out.println("this is token" + deviceToken);
         List<String> deviceTokenList = new ArrayList<>();
         deviceTokenList.add(deviceToken != null ? deviceToken : "");
 
         try {
+            String title = "";
+            String body = "";
+            if (status.name().equals("pending")) {
+                title = "Your order is now processing.";
+                body = "We will let you know if your order is being delivered.";
+            } else if (status.name().equals("delivered")) {
+                title = "Your order is now delivering.";
+                body = "It takes several days for the packages get to yours.";
+            } else if (status.name().equals("canceled")) {
+                title = "Your order is canceled.";
+                body = "There may be a reason for your order being canceled. Please contact us if you need help.";
+            }
             firebaseMessagingService.sendNotifications(
-                    "Your order is being shipped",
-                    "hehe",
+                    title,
+                    body,
                     deviceTokenList);
         } catch (FirebaseMessagingException e) {
             throw new RuntimeException(e);
