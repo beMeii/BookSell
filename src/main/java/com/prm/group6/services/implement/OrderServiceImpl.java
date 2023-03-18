@@ -1,12 +1,11 @@
 package com.prm.group6.services.implement;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.prm.group6.model.OrderStatusEnum;
 import com.prm.group6.model.dto.*;
 import com.prm.group6.model.entity.*;
 import com.prm.group6.repositories.*;
-import com.prm.group6.services.CartService;
-import com.prm.group6.services.JwtService;
-import com.prm.group6.services.OrderService;
+import com.prm.group6.services.*;
 import com.prm.group6.services.mappers.BookMapper;
 import com.prm.group6.services.mappers.OrderDetailMapper;
 import com.prm.group6.services.mappers.OrderMapper;
@@ -33,6 +32,10 @@ public class OrderServiceImpl implements OrderService {
     OrderDetailRepository orderDetailRepository;
     @Autowired
     CartService cartService;
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
     @Override
     public List<@Valid OrderDTO> getOrderListForUser(String token, int pageNo, int pageSize, String sort) {
         Account acc = jwtService.getAccount(token);
@@ -82,6 +85,23 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findByOrderId(orderId);
         order.setStatus(status.name());
         orderRepository.save(order);
+
+        int customerId = order.getCustomerId();
+        String deviceToken = customerRepository.findDeviceTokenByCustomerId(customerId);
+
+        System.out.println("this is token" + deviceToken);
+        List<String> deviceTokenList = new ArrayList<>();
+        deviceTokenList.add(deviceToken != null ? deviceToken : "");
+
+        try {
+            firebaseMessagingService.sendNotifications(
+                    "Your order is being shipped",
+                    "hehe",
+                    deviceTokenList);
+        } catch (FirebaseMessagingException e) {
+            throw new RuntimeException(e);
+        }
+
         return OrderMapper.INSTANCE.orderToOrderDto(order);
     }
 

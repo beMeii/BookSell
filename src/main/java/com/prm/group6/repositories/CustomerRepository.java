@@ -8,4 +8,6 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     Customer findById(int id);
     @Query("SELECT name FROM Customer Where customerId=?1 ")
     String findNameByCustomerId(int customerId);
+    @Query("SELECT deviceToken FROM Customer Where customerId=?1 ")
+    String findDeviceTokenByCustomerId(int customerId);
 }
