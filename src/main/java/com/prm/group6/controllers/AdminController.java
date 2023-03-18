@@ -25,7 +25,7 @@ public class AdminController {
     @GetMapping("/customer/retrieve")
     public ResponseEntity<ListResponse> getCustomerList(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                    @RequestParam(value = "sort", defaultValue = "title",required = false) String sort,
+                                                    @RequestParam(value = "sort", defaultValue = "name",required = false) String sort,
                                                     @RequestParam(value = "sortType", defaultValue = "ASC",required = false) String sortType){
         return ResponseEntity.ok(customerService.getCustomerList(pageNo, pageSize, sort, sortType));
     }
