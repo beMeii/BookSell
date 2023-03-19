@@ -36,6 +36,8 @@ public class OrderServiceImpl implements OrderService {
     CustomerRepository customerRepository;
     @Autowired
     private FirebaseMessagingService firebaseMessagingService;
+    @Autowired
+    BookRepository bookRepository;
     @Override
     public List<@Valid OrderDTO> getOrderListForUser(String token, int pageNo, int pageSize, String sort) {
         Account acc = jwtService.getAccount(token);
@@ -168,6 +170,9 @@ public class OrderServiceImpl implements OrderService {
                     .order(order)
                     .build();
             orderDetailList.add(orderDetail);
+            Book b = orderDetail.getBook();
+            b.setQuantityLeft(b.getQuantityLeft()-orderDetail.getQuantity());
+            bookRepository.save(b);
         }
         orderDetailRepository.saveAll(orderDetailList);
     }
