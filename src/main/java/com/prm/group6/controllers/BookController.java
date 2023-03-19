@@ -57,7 +57,6 @@ public class BookController {
     }
     @PostMapping("/update")
     public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO){
-        System.out.println("hyhy" + bookDTO);
         return new ResponseEntity<>(bookService.updateBook(bookDTO),HttpStatus.OK);
     }
     @DeleteMapping("/delete/{bookId}")
