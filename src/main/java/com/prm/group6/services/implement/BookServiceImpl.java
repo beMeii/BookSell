@@ -147,6 +147,10 @@ public class BookServiceImpl implements BookService {
                 List<Integer> deleteGenreDifferences = bookIdsDB.stream().filter(e-> !bookIdsDTO.contains(e)).collect(Collectors.toList());
                 if(!deleteGenreDifferences.isEmpty()){
                     bookGenreList.removeAll(deleteGenreDifferences);
+                    deleteGenreDifferences.forEach(deleteId ->{
+                        bookGenreRepository.deleteByBookIdAndGenreId(bookDTO.getBookId(), deleteId);
+                    });
+
                 }
                 //
                 List<Integer> addGenreDifferences = bookIdsDTO.stream().filter(e-> !bookIdsDB.contains(e)).collect(Collectors.toList());
