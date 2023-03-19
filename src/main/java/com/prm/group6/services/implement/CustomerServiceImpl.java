@@ -7,10 +7,12 @@ import com.prm.group6.model.dto.BookDTO;
 import com.prm.group6.model.dto.CustomerDTO;
 import com.prm.group6.model.dto.CustomerUpdateStatusRequest;
 import com.prm.group6.model.dto.ListResponse;
+import com.prm.group6.model.entity.Account;
 import com.prm.group6.model.entity.Book;
 import com.prm.group6.model.entity.Customer;
 import com.prm.group6.repositories.CustomerRepository;
 import com.prm.group6.services.CustomerService;
+import com.prm.group6.services.JwtService;
 import com.prm.group6.services.mappers.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,12 +27,27 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    JwtService jwtService;
+
     public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
         Customer customer = customerRepository.findById(customerDTO.getCustomerId());
         customerRepository.save(customer);
         customerDTO = CustomerMapper.INSTANCE.customerToCustomerDto(customer);
         return customerDTO;
     }
+
+    public CustomerDTO updateFirebaseToken(String token, String firebaseToken) {
+        Account acc = jwtService.getAccount(token);
+        Customer customer = customerRepository.findById(acc.getAccountId());
+
+        customer.setDeviceToken(firebaseToken);
+        customerRepository.save(customer);
+
+        CustomerDTO customerDTO = CustomerMapper.INSTANCE.customerToCustomerDto(customer);
+        return customerDTO;
+    }
+
 
     public ListResponse getCustomerList(int pageNo, int pageSize, String sort, String sortType) {
         ListResponse listResponse = new ListResponse();

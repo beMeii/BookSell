@@ -23,10 +23,10 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.updateCustomer(customerDTO), HttpStatus.OK);
     }
 
-//    @PostMapping("/fbtoken")
-//    public void update(@RequestHeader(name="Authorization") String token, @RequestBody CustomerDTO customerDTO){
-//        Account acc = jwtService.getAccount(token);
-//        customerDTO.setCustomerId(acc.getAccountId());
-//        return new ResponseEntity<>(customerService.updateCustomer(customerDTO), HttpStatus.OK);
-//    }
+    @PostMapping("/fbtoken")
+    public ResponseEntity<CustomerDTO> updateFirebaseToken(
+            @RequestHeader(name="Authorization") String token,
+            @RequestParam(value = "firebaseToken", defaultValue = "", required = true) String firebaseToken){
+        return new ResponseEntity<>(customerService.updateFirebaseToken(token, firebaseToken), HttpStatus.OK);
+    }
 }
