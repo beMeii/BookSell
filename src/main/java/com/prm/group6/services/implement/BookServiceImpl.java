@@ -133,31 +133,33 @@ public class BookServiceImpl implements BookService {
     public BookDTO updateBook(BookDTO bookDTO) {
         Book book = bookRepository.findByBookId(bookDTO.getBookId());
         if (Objects.nonNull(book)){
-            List<Integer> bookIdsDB = new ArrayList<>();
-            List<Integer> bookIdsDTO = new ArrayList<>();
-            List<BookGenre> bookGenreList = bookGenreRepository.findByBookId(bookDTO.getBookId());
-            bookGenreList.forEach(bookGenre -> {
-                bookIdsDB.add(bookGenre.getGenreId());
-            });
-            bookDTO.getGenreName().forEach(genreDTO -> {
-                bookIdsDTO.add(genreDTO.getGenreId());
-            });
-            //
-            List<Integer> deleteGenreDifferences = bookIdsDB.stream().filter(e-> !bookIdsDTO.contains(e)).collect(Collectors.toList());
-            if(!deleteGenreDifferences.isEmpty()){
-                bookGenreList.removeAll(deleteGenreDifferences);
-            }
-            //
-            List<Integer> addGenreDifferences = bookIdsDTO.stream().filter(e-> !bookIdsDB.contains(e)).collect(Collectors.toList());
-            if(!addGenreDifferences.isEmpty()){
-                addGenreDifferences.forEach(genreId -> {
-                    //BookGenre bookGenre = BookGenre.builder().genreId(genreId).bookId(bookDTO.getBookId()).build();
-                    BookGenre bookGenre = new BookGenre();
-                    bookGenre.setBookGenreId(bookGenreRepository.getMaxBookGenreId() +1);
-                    bookGenre.setGenreId(genreId);
-                    bookGenre.setBookId(bookDTO.getBookId());
-                    bookGenreRepository.save(bookGenre);
+            if (Objects.nonNull(bookDTO.getGenreName())){
+                List<Integer> bookIdsDB = new ArrayList<>();
+                List<Integer> bookIdsDTO = new ArrayList<>();
+                List<BookGenre> bookGenreList = bookGenreRepository.findByBookId(bookDTO.getBookId());
+                bookGenreList.forEach(bookGenre -> {
+                    bookIdsDB.add(bookGenre.getGenreId());
                 });
+                bookDTO.getGenreName().forEach(genreDTO -> {
+                    bookIdsDTO.add(genreDTO.getGenreId());
+                });
+                //
+                List<Integer> deleteGenreDifferences = bookIdsDB.stream().filter(e-> !bookIdsDTO.contains(e)).collect(Collectors.toList());
+                if(!deleteGenreDifferences.isEmpty()){
+                    bookGenreList.removeAll(deleteGenreDifferences);
+                }
+                //
+                List<Integer> addGenreDifferences = bookIdsDTO.stream().filter(e-> !bookIdsDB.contains(e)).collect(Collectors.toList());
+                if(!addGenreDifferences.isEmpty()){
+                    addGenreDifferences.forEach(genreId -> {
+                        //BookGenre bookGenre = BookGenre.builder().genreId(genreId).bookId(bookDTO.getBookId()).build();
+                        BookGenre bookGenre = new BookGenre();
+                        bookGenre.setBookGenreId(bookGenreRepository.getMaxBookGenreId() +1);
+                        bookGenre.setGenreId(genreId);
+                        bookGenre.setBookId(bookDTO.getBookId());
+                        bookGenreRepository.save(bookGenre);
+                    });
+                }
             }
             book = BookMapper.INSTANCE.bookDtoToBook(bookDTO);
             bookRepository.save(book);
