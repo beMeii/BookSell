@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 public interface CustomerService {
     CustomerDTO updateCustomer(CustomerDTO customerDTO);
-
     CustomerDTO updateFirebaseToken(String token, String firebaseToken);
     ListResponse getCustomerList(int pageNo, int pageSize, String sort, String sortType);
     Customer updateCustomerStatus(CustomerUpdateStatusRequest request);

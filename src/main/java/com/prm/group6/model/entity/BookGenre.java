@@ -12,7 +12,7 @@ import lombok.*;
 @Table(name = "book_genre")
 public class BookGenre {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_genre_id")
     private int bookGenreId;
     @Column(name = "book_id")

@@ -127,6 +127,15 @@ public class BookServiceImpl implements BookService {
     public BookDTO addNewBook(BookDTO bookDTO) {
         Book book = BookMapper.INSTANCE.bookDtoToBook(bookDTO);
         bookRepository.save(book);
+
+        bookDTO.getGenreName().forEach(genre -> {
+            BookGenre bookGenre = new BookGenre();
+            bookGenre.setBookId(book.getBookId());
+            bookGenre.setGenreId(genre.getGenreId());
+//            System.out.println(bookGenre);
+            bookGenreRepository.save(bookGenre);
+        });
+
         return bookDTO;
     }
 
