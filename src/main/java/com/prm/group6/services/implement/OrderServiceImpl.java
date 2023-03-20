@@ -38,41 +38,45 @@ public class OrderServiceImpl implements OrderService {
     private FirebaseMessagingService firebaseMessagingService;
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    NotificationService notificationService;
+
     @Override
     public List<@Valid OrderDTO> getOrderListForUser(String token, int pageNo, int pageSize, String sort) {
         Account acc = jwtService.getAccount(token);
-        List<OrderDTO>  orderDTOList = new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo,pageSize, Sort.by(sort).descending());
-        List<Order> orderList = orderRepository.findAllByCustomerId(acc.getAccountId(),pageable);
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
+        List<Order> orderList = orderRepository.findAllByCustomerId(acc.getAccountId(), pageable);
         orderList.forEach(order -> {
-            OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
-            orderDTO.setOrderId(order.getOrderId());
-            orderDTOList.add(orderDTO);
-            }
+                    OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
+                    orderDTO.setOrderId(order.getOrderId());
+                    orderDTOList.add(orderDTO);
+                }
         );
         return orderDTOList;
     }
+
     @Override
     public List<OrderDetailDTO> getOrderDetails(String token, int id, int pageNo, int pageSize) {
         Account acc = jwtService.getAccount(token);
         List<OrderDetailDTO> orderDetailDTOList = new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
-        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_OrderIdAndOrder_CustomerId(id, acc.getAccountId(),pageable);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_OrderIdAndOrder_CustomerId(id, acc.getAccountId(), pageable);
         orderDetailList.forEach(orderDetail -> {
-            Book book = orderDetail.getBook();
-            OrderDetailDTO orderDetailDTO = OrderDetailMapper.INSTANCE.orderDetailToOrderDetailDto(orderDetail);
-            BookDTO bookDTO = BookMapper.INSTANCE.bookToBookDto(book);
-            orderDetailDTO.setBook(bookDTO);
-            orderDetailDTOList.add(orderDetailDTO);
-            }
+                    Book book = orderDetail.getBook();
+                    OrderDetailDTO orderDetailDTO = OrderDetailMapper.INSTANCE.orderDetailToOrderDetailDto(orderDetail);
+                    BookDTO bookDTO = BookMapper.INSTANCE.bookToBookDto(book);
+                    orderDetailDTO.setBook(bookDTO);
+                    orderDetailDTOList.add(orderDetailDTO);
+                }
         );
         return orderDetailDTOList;
     }
 
     @Override
     public List<OrderDTO> getAllOrder(int pageNo, int pageSize, String sort, String sortType) {
-        List<OrderDTO>  orderDTOList = new ArrayList<>();
-        Pageable pageable = PageRequest.of(pageNo,pageSize, Sort.by(sort).descending());
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
         orderRepository.findAll(pageable).forEach(order -> {
                     OrderDTO orderDTO = OrderMapper.INSTANCE.orderToOrderDto(order);
                     orderDTO.setOrderId(order.getOrderId());
@@ -111,9 +115,16 @@ public class OrderServiceImpl implements OrderService {
                     title,
                     body,
                     deviceTokenList);
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setTitle(title);
+            notificationDTO.setBody(body);
+//            notificationDTO.setTime(new Timestamp(System.currentTimeMillis()));
+
+            NotificationDTO notificationDTOResponse = notificationService.addNotification(notificationDTO, customerId);
         } catch (FirebaseMessagingException e) {
             throw new RuntimeException(e);
         }
+
 
         return OrderMapper.INSTANCE.orderToOrderDto(order);
     }
@@ -149,20 +160,20 @@ public class OrderServiceImpl implements OrderService {
 
 
         //đè lại giá trị address với phone
-        if (paymentDTO.getAddress()!=null) order.setAddress(paymentDTO.getAddress());
-        if (paymentDTO.getPhone()!=null) order.setPhone(paymentDTO.getPhone());
+        if (paymentDTO.getAddress() != null) order.setAddress(paymentDTO.getAddress());
+        if (paymentDTO.getPhone() != null) order.setPhone(paymentDTO.getPhone());
 
 
         System.out.println(order);
-        saveOrderDetail(cart,orderRepository.save(order));
+        saveOrderDetail(cart, orderRepository.save(order));
         cartService.deleteCart(token);
         return OrderMapper.INSTANCE.orderToOrderDto(order);
     }
 
     @Transactional
-    private void saveOrderDetail(List<CartDTO> cart,Order order){
+    private void saveOrderDetail(List<CartDTO> cart, Order order) {
         List<OrderDetail> orderDetailList = new ArrayList<>();
-        for (CartDTO cartDTO:cart){
+        for (CartDTO cartDTO : cart) {
             OrderDetail orderDetail = new OrderDetail().builder()
                     .price(cartDTO.getBookDTO().getPrice())
                     .quantity(cartDTO.getQuantity())
@@ -171,15 +182,15 @@ public class OrderServiceImpl implements OrderService {
                     .build();
             orderDetailList.add(orderDetail);
             Book b = orderDetail.getBook();
-            b.setQuantityLeft(b.getQuantityLeft()-orderDetail.getQuantity());
+            b.setQuantityLeft(b.getQuantityLeft() - orderDetail.getQuantity());
             bookRepository.save(b);
         }
         orderDetailRepository.saveAll(orderDetailList);
     }
 
-    private float getTotalAmount(List<CartDTO> cart){
+    private float getTotalAmount(List<CartDTO> cart) {
         float totalAmount = 0;
-        for (CartDTO cartDTO: cart){
+        for (CartDTO cartDTO : cart) {
             totalAmount += cartDTO.getBookDTO().getPrice() * cartDTO.getQuantity();
         }
         return totalAmount;

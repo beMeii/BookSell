@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface FavouriteRepository extends JpaRepository<Favourite, Integer> {
     List<Favourite> findAllByAccountAccountId(int id, Pageable pageable);
-
     Favourite findByAccount_AccountIdAndBook_BookId(int accountId, int bookId);
 }

@@ -48,10 +48,10 @@ public class BookServiceImpl implements BookService {
         Pageable pageable;
         if (SortTypeEnum.DESC.name().equals(sortType)){
             pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
-        }
+        } else
         if (SortTypeEnum.ASC.name().equals(sortType)){
             pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
-        }else {
+        } else {
             throw new BookException(ErrorEnum.ERROR_SORT_TYPE.getErrorMessage());
         }
         Page<Book> bookList = bookRepository.findAll(pageable);
