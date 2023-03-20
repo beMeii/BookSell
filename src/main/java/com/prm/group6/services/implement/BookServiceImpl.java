@@ -1,6 +1,7 @@
 package com.prm.group6.services.implement;
 
 import com.prm.group6.exceptions.BookException;
+import com.prm.group6.model.BookStatus;
 import com.prm.group6.model.ErrorEnum;
 import com.prm.group6.model.SortTypeEnum;
 import com.prm.group6.model.dto.BookDTO;
@@ -89,7 +90,11 @@ public class BookServiceImpl implements BookService {
         }else {
             throw new BookException(ErrorEnum.ERROR_SORT_TYPE.getErrorMessage());
         }
-        Page<Book> bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCase(str, str, pageable);
+        Page<Book> bookList;
+        if (str.equals("")){
+            bookList = bookRepository.findByStatus(BookStatus.active.name(),pageable);
+        }
+        else bookList = bookRepository.findByTitleContainingOrAuthorContainingIgnoreCaseAndStatus(str, str, BookStatus.active.name(),pageable);
         bookList.forEach(book -> {
             BookDTO b= getBookById(book.getBookId());
             bookDTOList.add(b);
