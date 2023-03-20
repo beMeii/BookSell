@@ -93,7 +93,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         int customerId = order.getCustomerId();
-        String deviceToken = customerRepository.findDeviceTokenByCustomerId(customerId);
+//        String deviceToken = customerRepository.findDeviceTokenByCustomerId(customerId);
+        String deviceToken = "eMTW-e3TTzy4pXvc7o9kYh:APA91bG5bByjj7g9TByJdnebFurN39kksZytv4f1y_Svg8B1tgFNNnvM9gAFx5rGuDLKWAQQ9E0fo0OVyJGYXi2Z0pVx18IvE6Ml0wTjNcCpQHiIQBCE0pz9akcHE86-8cd4Z7AvK5ms";
 
         List<String> deviceTokenList = new ArrayList<>();
         deviceTokenList.add(deviceToken != null ? deviceToken : "");
