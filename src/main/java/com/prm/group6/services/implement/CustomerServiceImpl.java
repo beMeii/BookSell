@@ -32,7 +32,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
         Customer customer = customerRepository.findById(customerDTO.getCustomerId());
-        customerRepository.save(customer);
+        Customer customer1 = CustomerMapper.INSTANCE.customerDtoToCustomer(customerDTO);
+        customer1.setStatus(customer.getStatus());
+        customer1.setDeviceToken(customer.getDeviceToken());
+        customerRepository.save(customer1);
         customerDTO = CustomerMapper.INSTANCE.customerToCustomerDto(customer);
         return customerDTO;
     }
